@@ -17,7 +17,7 @@ Route::get('/tutorials/skill_assessment/{tutorialId}', function($tutorialId) use
         ->join('sections', 'commands.id', '=', 'sections.command_id')
         ->where('sections.tutorial_id', '=', $tutorialId)
         ->orderBy('section_id', 'asc')
-        ->get(['commands.videoUrl', 'commands.description', 'commands.command', 'commands.id', 'sections.section_id as sectionId']);
+        ->get(['commands.videoUrl', 'commands.description', 'commands.command', 'commands.id', 'sections.id as sectionId']);
 
     return view('content.tutorial', ['type' => 'skill_assessment', 'title' => $tutorial->name, 'tutorials' => $tutorials, 'tutorial_commands' => $tutorial_commands]);
 });
@@ -117,10 +117,7 @@ Route::post('/skills_assessment/{tutorialId}/section/{sectionId}', function($tut
         ->where('sections.id', '>', $sectionId)
         ->get();
 
-    dd($nextSection);
-
     if (isset($nextSection->sectionId) && is_int($nextSection->sectionId)) {
         return Response::redirectTo('/skills_assessment/' . $tutorialId . '/section/' . $sectionId->sectionid);
     }
-
 });

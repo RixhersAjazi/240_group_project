@@ -9,6 +9,7 @@
                 {{$command->command}}
                 {{$command->id}}
                 {{$command->description}}
+                {{$command->videoUrl}}
             </p>
             <p><a href="{{URL::previous()}}">Return to Command List</a></p>
         </div>
