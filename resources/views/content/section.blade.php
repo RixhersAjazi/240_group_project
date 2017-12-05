@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.master', ['active' => 'skills'])
 
 @section('title', $section->name . ' - ' . $section->command)
 @section('content')

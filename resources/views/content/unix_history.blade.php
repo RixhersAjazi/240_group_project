@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.master', ['active' => 'history'])
 
 @section('content')
     <p>Linux is an operating system that manages how your software and hardware are interconnected and communicate with each other.

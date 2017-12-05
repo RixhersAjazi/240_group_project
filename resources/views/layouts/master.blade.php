@@ -17,20 +17,38 @@
 <div class="nav">
 
 	<ul>
-		<li><a class="active" href="/">Home</a></li>
+		<li>
+			@if($active == 'home')
+				<a class="active" href="/">Home</a></li>
+			@else
+				<a href="/">Home</a></li>
+			@endif
 		<li class="dropdown">
-			<a href="" class="dropbtn">Tutorials</a>
+			@if($active == 'tutorials')
+				<a class="active drpbtn" href="">Tutorials</a>
+			@else
+				<a class="dropbtn" href="">Tutorials</a>
+			@endif
 			<div class="dropdown-content">
 				<a href="/tutorials/type">By Type</a>
 				<a href="/tutorials/skill_assessment">By Skill Assessment</a></div></li>
-		<li><a href="/skills_assessment">Skills Assessment</a></li>
-		<li><a href="/commands">Commands</a></li>
+			@if($active == 'skills')
+				<li><a class="active" href="/skills_assessment">Skills Assessment</a></li>
+			@else
+				<li><a href="/skills_assessment">Skills Assessment</a></li>
+			@endif
+			@if($active == 'commands')
+				<li><a class="active" href="/commands">Commands</a></li>
+			@else
+				<li><a href="/commands">Commands</a></li>
+			@endif
+
 		<li class="dropdown">
-			<a href="/unix_history" class="dropbtn">Unix Overview</a>
-			<div class="dropdown-content">
-				<a href="/what">What is Unix used for?</a>
-				<a href="/history">History of Unix</a>
-				<a href="/downloads">Unix Downloads</a></div></li>
+			@if($active == 'history')
+				<a href="/unix_history" class="active">Unix Overview</a>
+			@else
+				<a href="/unix_history" class="dropbtn">Unix Overview</a>
+			@endif
 	</ul></div>
 
 <div id="container">

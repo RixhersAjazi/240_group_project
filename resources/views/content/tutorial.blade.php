@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.master', ['active' => 'tutorials'])
 
 @section('title', $title . ' Tutorial')
 
