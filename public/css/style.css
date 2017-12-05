@@ -10,11 +10,13 @@ body{
 /* headers */
 .group{
     font-family: "Copperplate Gothic";
+    /*position: relative;*/
+    padding-top: 10px;
     color: #071E22;
-    font-size: 280%;
+    font-size: 150%;
     font-weight: bold;
-    text-align: left;
-    padding-top: 5px;
+    margin: 0 auto;
+    text-align:left;
 
 }
 
@@ -27,6 +29,10 @@ h1{
     text-align: center;
     padding-top: 5px;
 
+}
+
+p{
+    margin-left: 5px;   
 }
 
 h2{
@@ -47,8 +53,9 @@ ol {
     position: relative;
     top:0;
     width:100%;
-    padding: 5px;
+    /*padding: 5px;*/
 }
+
 ul {
     top:0;
     width:100%;
@@ -56,11 +63,12 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: gray;
+    background-color: #071E22;
 }
 
 ul li {
     float: left;
+    font-weight: bold;
 }
 
 ul li a.active{
@@ -144,10 +152,8 @@ ul li.dropdown {
     font-size:60%;
     color: #071E22;
     border: none;
-
     margin:25px;
     overflow:auto;
-
 }
 
 .imageR{
@@ -168,9 +174,9 @@ ul li.dropdown {
     float:left;
     border: none;
     padding: 5px 5px 5px 5px;
-    margin:15px;
-
-
+    width: 75px;
+    height: 75px;
+    border-radius: 30px;
 }
 
 .ref{
