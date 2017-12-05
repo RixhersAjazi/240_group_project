@@ -55,7 +55,7 @@ Route::get('/commands', function() use($tutorials) {
 
 Route::get('/skills_assessment/{tutorialId}', function($tutorialId) use($tutorials) {
     $tutorial = \App\Tutorials::query()->find($tutorialId);
-    $sections = \App\Sections::query()->where('tutorial_id', '=', $tutorialId)->get();
+    $sections = \App\Sections::query()->where('tutorial_id', '=', $tutorialId)->orderBy('sections.id', 'asc')->get();
 
     return view('content.sections', ['tutorial' => $tutorial, 'sections' => $sections, 'tutorials' => $tutorials]);
 
@@ -115,9 +115,12 @@ Route::post('/skills_assessment/{tutorialId}/section/{sectionId}', function($tut
         ->join('commands', 'commands.id', '=', 'sections.command_id')
         ->where('tutorial_id', '=', $tutorialId)
         ->where('sections.id', '>', $sectionId)
-        ->get();
+        ->orderBy('sections.id', 'asc')
+        ->get(['sections.id as sectionId']);
 
-    if (isset($nextSection->sectionId) && is_int($nextSection->sectionId)) {
-        return Response::redirectTo('/skills_assessment/' . $tutorialId . '/section/' . $sectionId->sectionid);
+    if (isset($nextSection[0]->sectionId)) {
+        return Response::redirectTo('/skills_assessment/' . $tutorialId . '/section/' . $nextSection[0]->sectionId);
+    } else {
+        return Response::redirectTo('skills_assessment')->with('success', 'All sections for tutorial ' . $section->name . ' completed!');
     }
 });
