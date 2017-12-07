@@ -49,6 +49,12 @@
 			@else
 				<a href="/unix_history" class="dropbtn">Unix Overview</a>
 			@endif
+		</li>
+		@if(Session('loggedIn'))
+		<li>
+			<a href="/logout">Logout</a>
+		</li>
+		@endif
 	</ul></div>
 
 <div id="container">
