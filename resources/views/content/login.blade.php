@@ -5,6 +5,8 @@
 
     @if(session('error'))
         {{session('error')}} <br><br><br>
+    @elseif(session('success'))
+        {{Session('success')}} <br><br><br>
     @endif
 
     <form method="post" action="/login">

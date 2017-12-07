@@ -212,19 +212,25 @@ Route::post('/register', function() {
         return Response::redirectTo('/register')->withInput()->with('error', 'Missing fields');
     }
 
-    if (DB::table('users')->where('username', '=', $user)->get()->isEmpty()) {
-        $success = DB::table('users')->insert(['username' => $user, 'password' => password_hash($password, PASSWORD_DEFAULT), 'email' => $email]);
-        if ($success) {
-            Mail::send('content.emails', ['content' => 'Congrats on registration to Lag6.me - your username is ' . $user], function ($message) use ($email) {
-                $message->from('no_reply@lag6.me');
-                $message->to($email);
-                $message->subject('Registration success');
-            });
-            return Response::redirectTo('/login');
+    if (DB::table('users')->where('username', '=', $user)->orWhere('email', '=', $email)->get()->isEmpty()) {
+        $success = DB::table('users')->insertGetId(['username' => $user, 'password' => password_hash($password, PASSWORD_DEFAULT), 'email' => $email]);
+        if (!is_null($success) && is_int($success)) {
+            try {
+                Mail::send('content.emails', ['content' => 'Congrats on registration to Lag6.me - your username is ' . $user], function ($message) use ($email) {
+                    $message->from('no_reply@lag6.me');
+                    $message->to($email);
+                    $message->subject('Registration success');
+                });
+            } catch (Exception $e) {
+                DB::table('users')->delete($success);
+                return Response::redirectTo('/register')->withInput()->with('error', 'Try again');
+            }
+
+            return Response::redirectTo('/login')->with('success', 'You may now login');
         } else {
             return Response::redirectTo('/register')->withInput()->with('error', 'Try again');
         }
     } else {
-        return Response::redirectTo('/login')->withInput()->with('error', 'Invalid registration attempt');
+        return Response::redirectTo('/register')->withInput()->with('error', 'Invalid registration attempt');
     }
 });
