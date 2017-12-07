@@ -54,7 +54,11 @@
 		@if(Session('loggedIn'))
 			<a href="/logout">Logout</a>
 		@else
-			<a href="/register">Register</a>
+			@if($active == 'register')
+				<a class="active" href="/register">Register</a>
+			@else
+				<a href="/register">Register</a>
+			@endif
 		@endif
 		</li>
 	</ul></div>

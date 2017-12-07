@@ -214,7 +214,7 @@ Route::post('/register', function() {
 
     if (DB::table('users')->where('username', '=', $user)->orWhere('email', '=', $email)->get()->isEmpty()) {
         $success = DB::table('users')->insertGetId(['username' => $user, 'password' => password_hash($password, PASSWORD_DEFAULT), 'email' => $email]);
-        if (!is_null($success) && is_int($success)) {
+        if ($success) {
             try {
                 Mail::send('content.emails', ['content' => 'Congrats on registration to Lag6.me - your username is ' . $user], function ($message) use ($email) {
                     $message->from('no_reply@lag6.me');
@@ -222,12 +222,12 @@ Route::post('/register', function() {
                     $message->subject('Registration success');
                 });
             } catch (Exception $e) {
-                DB::table('users')->delete($success);
-                return Response::redirectTo('/register')->withInput()->with('error', 'Try again');
+                return Response::redirectTo('/login')->withInput()->with('error', 'User created - but email failed - username is: ' . $user);
             }
 
             return Response::redirectTo('/login')->with('success', 'You may now login');
         } else {
+            dd($success);
             return Response::redirectTo('/register')->withInput()->with('error', 'Try again');
         }
     } else {

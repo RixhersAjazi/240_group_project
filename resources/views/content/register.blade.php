@@ -1,4 +1,4 @@
-@extends('layouts.master', ['active' => 'skills'])
+@extends('layouts.master', ['active' => 'register'])
 
 @section('title', 'Login')
 @section('content')
