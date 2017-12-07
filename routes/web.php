@@ -172,10 +172,17 @@ Route::post('/login', function () {
         return Response::redirectTo('skills_assessment');
     }
 
-    $user = Request::get('username');
-    $password = Request::get('password');
+    $user = Request::get('username') ?: null;
+    $password = Request::get('password') ?: null;
+
+    if (is_null($user) || is_null($password)) {
+        return Response::redirectTo('/login')->withInput()->with('error', 'Missing fields!');
+    }
 
     $userInfo = DB::table('users')->where('username', '=', $user)->get(['id', 'password', 'email']);
+    if ($userInfo->isEmpty()) {
+        return Response::redirectTo('/login')->withInput()->with('error', 'Auth problem');
+    }
 
     if (password_verify($password, $userInfo[0]->password)) {
         Session::put('loggedIn', true);
@@ -185,6 +192,32 @@ Route::post('/login', function () {
         return Response::redirectTo('/skills_assessment')->with('success', 'Welcome back');
     }
 
-    return back()->with('error', 'Authentication Failed');
+    return back()->with('error', 'Authentication Failed')->withInput();
 });
 
+Route::get('/register', function() {
+    return view('content.register');
+});
+
+Route::post('/register', function() {
+    if (Session('loggedIn')) {
+        return Response::redirectTo('skills_assessment');
+    }
+
+    $user = Request::get('username') ?: null;
+    $password = Request::get('password') ?: null;
+    $email = Request::get('email') ?: null;
+
+    if (is_null($user) || is_null($password) || is_null($email)) {
+        return Response::redirectTo('/register')->withInput()->with('error', 'Missing fields');
+    }
+
+    $success = DB::table('users')->insert(['username' => $user, 'password' => password_hash($password, PASSWORD_DEFAULT), 'email' => $email]);
+    if ($success) {
+        Mail::alwaysTo($email);
+        Mail::send('You have registered to Lag6.me');
+        return Response::redirectTo('/login');
+    } else {
+        return Response::redirectTo('/register')->withInput()->with('error', 'Try again');
+    }
+});

@@ -50,11 +50,13 @@
 				<a href="/unix_history" class="dropbtn">Unix Overview</a>
 			@endif
 		</li>
-		@if(Session('loggedIn'))
 		<li>
+		@if(Session('loggedIn'))
 			<a href="/logout">Logout</a>
-		</li>
+		@else
+			<a href="/register">Register</a>
 		@endif
+		</li>
 	</ul></div>
 
 <div id="container">
